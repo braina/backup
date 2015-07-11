@@ -28,7 +28,6 @@ let g:accelerated_jk_acceleration_table = [10,5,3]
 nmap j <Plug>(accelerated_jk_gj)
 nmap k <Plug>(accelerated_jk_gk)
 
-
 "vimproc非同期処理
 NeoBundle 'Shougo/vimproc.vim', {
 						\ 'build' : {
@@ -366,8 +365,6 @@ colorscheme molokai
 set t_Co=256
 "カーソル行の背景色変更
 set cursorline
-"コメント行の色変更
-hi Comment ctermfg=grey
 "ステータス行を常に表示 
 set laststatus=2
 
