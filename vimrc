@@ -366,8 +366,11 @@ colorscheme molokai
 set t_Co=256
 "カーソル行の背景色変更
 set cursorline
-"ステータス行を常に表示
+"コメント行の色変更
+hi Comment ctermfg=grey
+"ステータス行を常に表示 
 set laststatus=2
+
 "カーソルが何行目何列に置かれているかの表示
 set ruler
 "タイプ途中のcommandを表示
