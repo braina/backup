@@ -117,7 +117,9 @@ NeoBundle 'Yggdroot/indentLine'
 let g:indentLine_faster = 1
 nmap <silent><Leader>i :<C-u>IndentLinesToggle<CR>
 
-
+"toggle case
+NeoBundle 'tanabe/ToggleCase-vim'
+nnoremap <silent> <C-_> :<C-u>call ToggleCase()<CR>
 
 "Emmet
 NeoBundleLazy 'mattn/emmet-vim', {
@@ -503,6 +505,15 @@ function! s:GetHighlight(hi)
 endfunction
 """"""""""""""""""""""""""""""
 
+" tmuxにファイル名を渡す
+if $TMUX != ""
+  augroup titlesettings
+    autocmd!
+    autocmd BufEnter * call system("tmux rename-window " . "'[vim] " . expand("%:t") . "'")
+    autocmd VimLeave * call system("tmux rename-window zsh")
+    autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
+  augroup END
+endif
 
 "ファイル開いたら前回のカーソル位置へ移動
   augroup vimrcEx
