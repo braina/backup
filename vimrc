@@ -274,7 +274,7 @@ NeoBundle 'honza/vim-snippets'
 
 
 "controlP でファイル表示
-NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'ctrlpvim/ctrlp.vim'
 let g:ctrlp_use_migemo = 1
 
 
