@@ -514,12 +514,11 @@ if $TMUX != ""
     autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
   augroup END
 endif
-
-"ファイル開いたら前回のカーソル位置へ移動
-  augroup vimrcEx
-  autocmd!
-  autocmd BufReadPost *
-  \ if line("'\"") > 1 && line("'\"") <= line('$') |
-  \   exe "normal! g`\"" |
-  \ endif
-  augroup END
+"無限undo
+if has('persistent_undo')
+	set undodir=~/.vim/undo
+	set undofile
+endif
+"編集箇所保存
+  au BufWritePost * mkview
+  autocmd BufReadPost * loadview
