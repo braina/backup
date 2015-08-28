@@ -212,6 +212,13 @@ NeoBundle 'tpope/vim-surround'
 "Tabを便利にするために入れるやつ
 NeoBundle 'kana/vim-submode'
 
+"migemo
+NeoBundle 'haya14busa/incsearch-migemo.vim'
+" マッピング例
+map m/ <Plug>(incsearch-migemo-/)
+map m? <Plug>(incsearch-migemo-?)
+map mg/ <Plug>(incsearch-migemo-stay)
+
 "マルチインクリメントサーチ
 NeoBundle 'haya14busa/incsearch.vim'
 map /  <Plug>(incsearch-forward)
@@ -223,23 +230,23 @@ map g/ <Plug>(incsearch-stay)
 NeoBundle has('lua') ? 'Shougo/neocomplete' : 'Shougo/neocomplcache'
 
 if neobundle#is_installed('neocomplete')
-		let g:neocomplete#enable_at_startup = 1
-		let g:neocomplete#enable_ignore_case = 1
-		let g:neocomplete#enable_smart_case = 1
-		if !exists('g:neocomplete#keyword_patterns')
-				let g:neocomplete#keyword_patterns = {}
-		endif
-		let g:neocomplete#keyword_patterns._ = '\h\w*'
+	let g:neocomplete#enable_at_startup = 1
+	let g:neocomplete#enable_ignore_case = 1
+	let g:neocomplete#enable_smart_case = 1
+	if !exists('g:neocomplete#keyword_patterns')
+		let g:neocomplete#keyword_patterns = {}
+	endif
+	let g:neocomplete#keyword_patterns._ = '\h\w*'
 elseif neobundle#is_installed('neocomplcache')
-		let g:neocomplcache_enable_at_startup = 1
-		let g:neocomplcache_enable_ignore_case = 1
-		let g:neocomplcache_enable_smart_case = 1
-		if !exists('g:neocomplcache_keyword_patterns')
-				let g:neocomplcache_keyword_patterns = {}
-		endif
-		let g:neocomplcache_keyword_patterns._ = '\h\w*'
-		let g:neocomplcache_enable_camel_case_completion = 1
-		let g:neocomplcache_enable_underbar_completion = 1
+	let g:neocomplcache_enable_at_startup = 1
+	let g:neocomplcache_enable_ignore_case = 1
+	let g:neocomplcache_enable_smart_case = 1
+	if !exists('g:neocomplcache_keyword_patterns')
+		let g:neocomplcache_keyword_patterns = {}
+	endif
+	let g:neocomplcache_keyword_patterns._ = '\h\w*'
+	let g:neocomplcache_enable_camel_case_completion = 1
+	let g:neocomplcache_enable_underbar_completion = 1
 endif
 
 
@@ -262,7 +269,7 @@ smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : 
 
 " For snippet_complete marker.
 if has('conceal')
-		set conceallevel=2 concealcursor=i
+	set conceallevel=2 concealcursor=i
 endif
 
 " snippetファイルがまとまっているもの
@@ -452,16 +459,16 @@ cmap w!! w !sudo tee > /dev/null %
 " 全角スペースの表示
 """"""""""""""""""""""""""""""
 function! ZenkakuSpace()
-		highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
+	highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 endfunction
 
 if has('syntax')
-		augroup ZenkakuSpace
-				autocmd!
-				autocmd ColorScheme * call ZenkakuSpace()
-				autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
-		augroup END
-		call ZenkakuSpace()
+	augroup ZenkakuSpace
+		autocmd!
+		autocmd ColorScheme * call ZenkakuSpace()
+		autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
+	augroup END
+	call ZenkakuSpace()
 endif
 """"""""""""""""""""""""""""""
 
@@ -477,42 +484,42 @@ set clipboard+=unnamed
 let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
 
 if has('syntax')
-		augroup InsertHook
-				autocmd!
-				autocmd InsertEnter * call s:StatusLine('Enter')
-				autocmd InsertLeave * call s:StatusLine('Leave')
-		augroup END
+	augroup InsertHook
+		autocmd!
+		autocmd InsertEnter * call s:StatusLine('Enter')
+		autocmd InsertLeave * call s:StatusLine('Leave')
+	augroup END
 endif
 
 let s:slhlcmd = ''
 function! s:StatusLine(mode)
-		if a:mode == 'Enter'
-				silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
-				silent exec g:hi_insert
-		else
-				highlight clear StatusLine
-				silent exec s:slhlcmd
-		endif
+	if a:mode == 'Enter'
+		silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
+		silent exec g:hi_insert
+	else
+		highlight clear StatusLine
+		silent exec s:slhlcmd
+	endif
 endfunction
 
 function! s:GetHighlight(hi)
-		redir => hl
-		exec 'highlight '.a:hi
-		redir END
-		let hl = substitute(hl, '[\r\n]', '', 'g')
-		let hl = substitute(hl, 'xxx', '', '')
-		return hl
+	redir => hl
+	exec 'highlight '.a:hi
+	redir END
+	let hl = substitute(hl, '[\r\n]', '', 'g')
+	let hl = substitute(hl, 'xxx', '', '')
+	return hl
 endfunction
 """"""""""""""""""""""""""""""
 
 " tmuxにファイル名を渡す
 if $TMUX != ""
-  augroup titlesettings
-    autocmd!
-    autocmd BufEnter * call system("tmux rename-window " . "'[vim] " . expand("%:t") . "'")
-    autocmd VimLeave * call system("tmux rename-window zsh")
-    autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
-  augroup END
+	augroup titlesettings
+		autocmd!
+		autocmd BufEnter * call system("tmux rename-window " . "'[vim] " . expand("%:t") . "'")
+		autocmd VimLeave * call system("tmux rename-window zsh")
+		autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
+	augroup END
 endif
 "無限undo
 if has('persistent_undo')
@@ -520,5 +527,5 @@ if has('persistent_undo')
 	set undofile
 endif
 "編集箇所保存
-  au BufWritePost * mkview
-  autocmd BufReadPost * loadview
+au BufWritePost * mkview
+autocmd BufReadPost * loadview
