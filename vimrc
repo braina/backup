@@ -110,6 +110,9 @@ vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+"undotree可視化
+NeoBundle 'sjl/gundo.vim'
+nmap gu              :<C-u>GundoToggle<CR>
 
 "インデント表示
 NeoBundle 'Yggdroot/indentLine'
@@ -175,6 +178,17 @@ let g:sass_compile_aftercmd = ''
 "}}}
 
 
+"tweetvim
+NeoBundle 'basyura/TweetVim'
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'basyura/twibill.vim'
+NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'h1mesuke/unite-outline'
+NeoBundle 'basyura/bitly.vim'
+NeoBundle 'Shougo/unite.vim'
+filetype plugin indent on
+let g:tweetvim_tweet_per_page = 50
+nmap tn              :<C-u>TweetVimSay<CR>
 
 "vimquickrun
 NeoBundle 'thinca/vim-quickrun'
@@ -521,11 +535,22 @@ if $TMUX != ""
 		autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 	augroup END
 endif
+
 "無限undo
 if has('persistent_undo')
 	set undodir=~/.vim/undo
 	set undofile
 endif
+
 "編集箇所保存
-au BufWritePost * mkview
-autocmd BufReadPost * loadview
+function! s:RestoreCursorPostion()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+" ファイルを開いた時に、以前のカーソル位置を復元する
+augroup vimrc_restore_cursor_position
+  autocmd!
+  autocmd BufWinEnter * call s:RestoreCursorPostion()
+augroup END
