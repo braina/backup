@@ -110,6 +110,15 @@ vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+"commentトグル
+NeoBundle 'scrooloose/nerdcommenter'
+let NERDSpaceDelims = 1
+nmap ,, <Plug>NERDCommenterToggle
+vmap ,, <Plug>NERDCommenterToggle
+""未対応ファイルタイプのエラーメッセージを表示しない
+let NERDShutUp=1
+
+
 "undotree可視化
 NeoBundle 'sjl/gundo.vim'
 nmap gu              :<C-u>GundoToggle<CR>
@@ -177,6 +186,10 @@ let g:sass_compile_beforecmd = ''
 let g:sass_compile_aftercmd = ''
 "}}}
 
+"CSSなどの色をその色でハイライト
+"http://blog.scimpr.com/2013/02/24/vim%E3%81%A7css%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%99%E3%82%8B%E3%81%A8%E3%81%8D%E3%81%AB%E8%89%B2%E3%82%92%E3%83%97%E3%83%AC%E3%83%B4%E3%83%A5%E3%83%BC%E3%80%9Ccolorizer/
+NeoBundle 'lilydjwg/colorizer'
+
 
 "tweetvim
 NeoBundle 'basyura/TweetVim'
@@ -187,29 +200,29 @@ NeoBundle 'h1mesuke/unite-outline'
 NeoBundle 'basyura/bitly.vim'
 NeoBundle 'Shougo/unite.vim'
 filetype plugin indent on
-let g:tweetvim_tweet_per_page = 50
+let g:tweetvim_tweet_per_page = 75
 nmap tn              :<C-u>TweetVimSay<CR>
 
 "vimquickrun
 NeoBundle 'thinca/vim-quickrun'
 "quickrun for processing:
 let g:quickrun_config = {
-						\   "_" : {
-						\		'split':'vertical',
-						\       "outputter/buffe//close_on_empty" : 1,
-						\       "runner" : "vimproc",
-						\       "runner/vimproc/updatetime" : 60
-						\   },
-						\}
+			\   "_" : {
+			\		'split':'vertical',
+			\       "outputter/buffe//close_on_empty" : 1,
+			\       "runner" : "vimproc",
+			\       "runner/vimproc/updatetime" : 60
+			\   },
+			\}
 let g:quickrun_config.processing =  {
-						\     'command': 'processing-java',
-						\     'exec': '%c --sketch=$PWD/ --output=$PWD/temp --run --force',
-						\   }
+			\     'command': 'processing-java',
+			\     'exec': '%c --sketch=$PWD/ --output=$PWD/temp --run --force',
+			\   }
 let g:quickrun_config['coffee'] = {'command' : 'coffee', 'exec' : ['%c -cbp %s']}
 let g:quickrun_config['html'] = { 'command' : 'open', 'exec' : '%c %s', 'outputter': 'browser' }
 let g:quickrun_config["java"] = {
-      \ 'exec' : ['javac -J-Dfile.encoding=UTF8 %o %s', '%c -Dfile.encoding=UTF8 %s:t:r %a']
-\}
+			\ 'exec' : ['javac -J-Dfile.encoding=UTF8 %o %s', '%c -Dfile.encoding=UTF8 %s:t:r %a']
+			\}
 
 
 
@@ -536,21 +549,29 @@ if $TMUX != ""
 	augroup END
 endif
 
-"無限undo
-if has('persistent_undo')
-	set undodir=~/.vim/undo
-	set undofile
-endif
+
+"undo
+set undodir=$HOME/.vim/undo
+set undofile
+":ClearUndo で undo履歴クリア
+command -nargs=0 ClearUndo call <sid>ClearUndo()
+function! s:ClearUndo()
+  let old_undolevels = &undolevels
+  set undolevels=-1
+  exe "normal a \<BS>\<Esc>"
+  let &undolevels = old_undolevels
+  unlet old_undolevels
+endfunction
 
 "編集箇所保存
 function! s:RestoreCursorPostion()
-  if line("'\"") <= line("$")
-    normal! g`"
-    return 1
-  endif
+	if line("'\"") <= line("$")
+		normal! g`"
+		return 1
+	endif
 endfunction
 " ファイルを開いた時に、以前のカーソル位置を復元する
 augroup vimrc_restore_cursor_position
-  autocmd!
-  autocmd BufWinEnter * call s:RestoreCursorPostion()
+	autocmd!
+	autocmd BufWinEnter * call s:RestoreCursorPostion()
 augroup END
