@@ -122,6 +122,12 @@ let NERDShutUp=1
 "undotree可視化
 NeoBundle 'sjl/gundo.vim'
 nmap gu              :<C-u>GundoToggle<CR>
+"いちいちプレビューしない奴 r 押下でプレビューする
+"使用感的に微妙なので保留（本家でも3jとかすれば同じといえばおなじ）
+"http://d.hatena.ne.jp/heavenshell/20120218/1329532535
+"NeoBundle 'https://bitbucket.org/heavenshell/gundo.vim'
+"let g:gundo_auto_preview = 0
+
 
 "インデント表示
 NeoBundle 'Yggdroot/indentLine'
@@ -411,6 +417,8 @@ set confirm
 "1行の文字数制限をなくす
 set display=lastline
 
+"</で補完
+autocmd FileType html inoremap <silent> <buffer> </ </<C-x><C-o>
 
 "Markdownの拡張子を拡張
 set syntax=markdown
@@ -479,7 +487,19 @@ set backspace=indent,eol,start
 " w!! でスーパーユーザーとして保存（sudoが使える環境限定）
 cmap w!! w !sudo tee > /dev/null %
 
+"n/で検索時にヒット数表示
+"http://qiita.com/akira-hamada/items/eb46ef02fabfdd418449
+nnoremap <expr> n/ _(":%s/<Cursor>/&/gn")
 
+function! s:move_cursor_pos_mapping(str, ...)
+    let left = get(a:, 1, "<Left>")
+    let lefts = join(map(split(matchstr(a:str, '.*<Cursor>\zs.*\ze'), '.\zs'), 'left'), "")
+    return substitute(a:str, '<Cursor>', '', '') . lefts
+endfunction
+
+function! _(str)
+    return s:move_cursor_pos_mapping(a:str, "\<Left>")
+endfunction
 
 
 """"""""""""""""""""""""""""""
