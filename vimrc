@@ -119,6 +119,9 @@ vmap ,, <Plug>NERDCommenterToggle
 let NERDShutUp=1
 
 
+"日本語ヘルプ追加
+NeoBundle 'vim-jp/vimdoc-ja'
+
 "undotree可視化
 NeoBundle 'sjl/gundo.vim'
 nmap gu              :<C-u>GundoToggle<CR>
@@ -191,6 +194,13 @@ let g:sass_compile_file = ['scss', 'sass']
 let g:sass_compile_beforecmd = ''
 let g:sass_compile_aftercmd = ''
 "}}}
+
+"ハイライト
+NeoBundle 't9md/vim-quickhl'
+nmap <Space>m <Plug>(quickhl-manual-this)
+xmap <Space>m <Plug>(quickhl-manual-this)
+nmap <Space>M <Plug>(quickhl-manual-reset)
+xmap <Space>M <Plug>(quickhl-manual-reset)
 
 "CSSなどの色をその色でハイライト
 "http://blog.scimpr.com/2013/02/24/vim%E3%81%A7css%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%99%E3%82%8B%E3%81%A8%E3%81%8D%E3%81%AB%E8%89%B2%E3%82%92%E3%83%97%E3%83%AC%E3%83%B4%E3%83%A5%E3%83%BC%E3%80%9Ccolorizer/
