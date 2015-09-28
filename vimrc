@@ -589,13 +589,6 @@ set undodir=$HOME/.vim/undo
 set undofile
 "ClearUndo で undo履歴クリア
 command -nargs=0 ClearUndo call <sid>ClearUndo()
-function! s:ClearUndo()
-  let old_undolevels = &undolevels
-  set undolevels=-1
-  exe "normal a \<BS>\<Esc>"
-  let &undolevels = old_undolevels
-  unlet old_undolevels
-endfunction
 
 "編集箇所保存
 function! s:RestoreCursorPostion()
@@ -609,3 +602,8 @@ augroup vimrc_restore_cursor_position
 	autocmd!
 	autocmd BufWinEnter * call s:RestoreCursorPostion()
 augroup END
+
+
+"Escのききをよくするため、待ち時間を変更
+"見た目は変わってないんだけど、多分大丈夫
+set timeout timeoutlen=1000 ttimeoutlen=10
