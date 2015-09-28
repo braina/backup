@@ -485,6 +485,10 @@ call submode#map('bufmove', 'n', '', '-', '<C-w>-')
 "Yを行末までヤンクに変更
 nnoremap Y y$
 
+"xで削除した文字はレジスタに突っ込まない
+nnoremap x "_x
+nnoremap X "_X
+
 "行頭→行末のカーソル移動
 set whichwrap+=h,l,<,>,[,],b,s
 "visual bellを切る
@@ -583,7 +587,7 @@ endif
 "undo
 set undodir=$HOME/.vim/undo
 set undofile
-":ClearUndo で undo履歴クリア
+"ClearUndo で undo履歴クリア
 command -nargs=0 ClearUndo call <sid>ClearUndo()
 function! s:ClearUndo()
   let old_undolevels = &undolevels
