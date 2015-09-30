@@ -171,6 +171,21 @@ let g:unite_force_overwrite_statusline = 0
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 
+"ctagsを利用したジャンプリスト
+NeoBundle 'majutsushi/tagbar'
+nmap <F8> :TagbarToggle<CR>
+"保存時ctags自動生成 => :ctags で生成にする。
+NeoBundle 'soramugi/auto-ctags.vim'
+
+"let g:auto_ctags = 1
+
+"lookを使った英単語補完
+NeoBundle 'ujihisa/neco-look'
+"spell 文法のチェック
+"http://rhysd.hatenablog.com/entry/2014/12/08/082825
+":GrammarousCheck で実行
+NeoBundle 'rhysd/vim-grammarous'
+
 
 "簡単整形
 "http://blog.tokoyax.com/entry/vim/vim-easy-align
