@@ -1,5 +1,4 @@
 "http://deadlinetimer.com/timer/106757
-"test
 
 "neobundle
 " neobundle settings {{{
