@@ -1,5 +1,7 @@
 "http://deadlinetimer.com/timer/106757
+"test
 
+"neobundle
 " neobundle settings {{{
 if has('vim_starting')
 		set nocompatible
@@ -15,12 +17,11 @@ endif
 call neobundle#begin(expand('~/.vim/bundle'))
 let g:neobundle_default_git_protocol='https'
 
-" neobundle#begin - neobundle#end の間に導入するプラグインを記載します。
+
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 "閉じ括弧自動補完
 NeoBundle 'Townk/vim-autoclose'
-
 
 "jkを加速する
 NeoBundle 'rhysd/accelerated-jk'
@@ -39,6 +40,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 						\ }
 
 
+" 1見た目を綺麗に
 NeoBundle 'itchyny/lightline.vim'
 
 let g:lightline = {
@@ -176,16 +178,16 @@ NeoBundle 'majutsushi/tagbar'
 nmap <F8> :TagbarToggle<CR>
 "保存時ctags自動生成 => :ctags で生成にする。
 NeoBundle 'soramugi/auto-ctags.vim'
-
 "let g:auto_ctags = 1
+
 
 "lookを使った英単語補完
 NeoBundle 'ujihisa/neco-look'
 "spell 文法のチェック
+set spelllang=en,cjk
 "http://rhysd.hatenablog.com/entry/2014/12/08/082825
 ":GrammarousCheck で実行
 NeoBundle 'rhysd/vim-grammarous'
-
 
 "簡単整形
 "http://blog.tokoyax.com/entry/vim/vim-easy-align
@@ -223,6 +225,7 @@ let g:indentLine_faster = 1
 nmap <silent><Leader>i :<C-u>IndentLinesToggle<CR>
 
 "toggle case
+"snake case camel case
 NeoBundle 'tanabe/ToggleCase-vim'
 nnoremap <silent> <C-_> :<C-u>call ToggleCase()<CR>
 
@@ -304,6 +307,8 @@ filetype plugin indent on
 let g:tweetvim_tweet_per_page = 75
 nmap tn              :<C-u>TweetVimSay<CR>
 
+
+
 "vimquickrun
 NeoBundle 'thinca/vim-quickrun'
 "quickrun for processing:
@@ -315,10 +320,12 @@ let g:quickrun_config = {
 			\       "runner/vimproc/updatetime" : 60
 			\   },
 			\}
+
 let g:quickrun_config.processing =  {
 			\     'command': 'processing-java',
 			\     'exec': '%c --sketch=$PWD/ --output=$PWD/temp --run --force',
 			\   }
+
 let g:quickrun_config['coffee'] = {'command' : 'coffee', 'exec' : ['%c -cbp %s']}
 let g:quickrun_config['html'] = { 'command' : 'open', 'exec' : '%c %s', 'outputter': 'browser' }
 let g:quickrun_config["java"] = {
@@ -336,6 +343,12 @@ let g:seiya_auto_enable=1
 
 "文字列を囲んだり、囲んである文字列を消したり置換したり
 NeoBundle 'tpope/vim-surround'
+
+" NeoBundle 'kana/vim-operator-user' 
+" NeoBundle 'rhysd/vim-operator-surround'
+" map <silent>sa <Plug>(operator-surround-append)
+" map <silent>sd <Plug>(operator-surround-delete)
+" map <silent>sr <Plug>(operator-surround-replace)
 
 "Tabを便利にするために入れるやつ
 NeoBundle 'kana/vim-submode'
@@ -403,9 +416,8 @@ endif
 " snippetファイルがまとまっているもの
 NeoBundle 'honza/vim-snippets'
 
-
-
-
+"git操作
+NeoBundle 'tpope/vim-fugitive'
 
 "controlP でファイル表示
 NeoBundle 'ctrlpvim/ctrlp.vim'
@@ -692,3 +704,25 @@ augroup END
 "Escのききをよくするため、待ち時間を変更
 "見た目は変わってないんだけど、多分大丈夫
 set timeout timeoutlen=1000 ttimeoutlen=10
+
+
+
+if has('gui_macvim')
+	set imdisable	" IMを無効化
+	lang C
+	set helplang=en
+
+	set nobackup
+	set guioptions-=T
+	set antialias
+	set visualbell t_vb=
+	set columns=100
+	set lines=48
+
+
+	" Color Scheme
+	syntax enable
+	colorscheme molokai
+	set laststatus=2
+	set showcmd
+endif
