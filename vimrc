@@ -1,5 +1,4 @@
 "http://deadlinetimer.com/timer/106757
-"test
 
 "neobundle
 " neobundle settings {{{
@@ -210,14 +209,13 @@ let NERDShutUp=1
 NeoBundle 'vim-jp/vimdoc-ja'
 
 "undotree可視化
-NeoBundle 'sjl/gundo.vim'
-nmap gu              :<C-u>GundoToggle<CR>
+"NeoBundle 'sjl/gundo.vim'
 "いちいちプレビューしない奴 r 押下でプレビューする
 "使用感的に微妙なので保留（本家でも3jとかすれば同じといえばおなじ）
 "http://d.hatena.ne.jp/heavenshell/20120218/1329532535
-"NeoBundle 'https://bitbucket.org/heavenshell/gundo.vim'
-"let g:gundo_auto_preview = 0
-
+NeoBundle 'https://bitbucket.org/heavenshell/gundo.vim'
+let g:gundo_auto_preview = 0
+nmap gu              :<C-u>GundoToggle<CR>
 
 "インデント表示
 NeoBundle 'Yggdroot/indentLine'
