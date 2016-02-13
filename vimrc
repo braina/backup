@@ -72,7 +72,7 @@ function! LightLineModified()
 endfunction
 
 function! LightLineReadonly()
-  return &ft !~? 'help' && &readonly ? '🔒' : ''
+  return &ft !~? 'help' && &readonly ? '🔒' : '🔓'
 endfunction
 
 function! LightLineFilename()
@@ -91,7 +91,7 @@ endfunction
 function! LightLineFugitive()
   try
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-      let mark = '' 
+      let mark = ' ' 
       let _ = fugitive#head()
       return strlen(_) ? mark._ : ''
     endif
@@ -209,11 +209,11 @@ let NERDShutUp=1
 NeoBundle 'vim-jp/vimdoc-ja'
 
 "undotree可視化
-"NeoBundle 'sjl/gundo.vim'
+NeoBundle 'sjl/gundo.vim'
 "いちいちプレビューしない奴 r 押下でプレビューする
 "使用感的に微妙なので保留（本家でも3jとかすれば同じといえばおなじ）
 "http://d.hatena.ne.jp/heavenshell/20120218/1329532535
-NeoBundle 'https://bitbucket.org/heavenshell/gundo.vim'
+"NeoBundle 'https://bitbucket.org/heavenshell/gundo.vim'
 let g:gundo_auto_preview = 0
 nmap gu              :<C-u>GundoToggle<CR>
 
@@ -351,6 +351,12 @@ NeoBundle 'tpope/vim-surround'
 "Tabを便利にするために入れるやつ
 NeoBundle 'kana/vim-submode'
 
+"マルチインクリメントサーチ
+NeoBundle 'haya14busa/incsearch.vim'
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
 "migemo
 NeoBundle 'haya14busa/incsearch-migemo.vim'
 " マッピング例
@@ -358,11 +364,6 @@ map m/ <Plug>(incsearch-migemo-/)
 map m? <Plug>(incsearch-migemo-?)
 map mg/ <Plug>(incsearch-migemo-stay)
 
-"マルチインクリメントサーチ
-NeoBundle 'haya14busa/incsearch.vim'
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
 
 
 "協力な補完機能 neocomplete
@@ -692,6 +693,7 @@ function! s:RestoreCursorPostion()
 		return 1
 	endif
 endfunction
+
 " ファイルを開いた時に、以前のカーソル位置を復元する
 augroup vimrc_restore_cursor_position
 	autocmd!
