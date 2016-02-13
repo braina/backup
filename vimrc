@@ -72,7 +72,7 @@ function! LightLineModified()
 endfunction
 
 function! LightLineReadonly()
-  return &ft !~? 'help' && &readonly ? '🔒' : '🔓'
+  return &ft !~? 'help' && &readonly ? '🔐' : '🔓'
 endfunction
 
 function! LightLineFilename()
