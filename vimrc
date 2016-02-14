@@ -30,142 +30,142 @@ nmap k <Plug>(accelerated_jk_gk)
 
 "vimproc非同期処理
 NeoBundle 'Shougo/vimproc.vim', {
-						\ 'build' : {
-						\ 'windows' : 'make -f make_mingw32.mak',
-						\ 'cygwin' : 'make -f make_cygwin.mak',
-						\ 'mac' : 'make -f make_mac.mak',
-						\ 'unix' : 'make -f make_unix.mak',
-						\ },
-						\ }
+			\ 'build' : {
+			\ 'windows' : 'make -f make_mingw32.mak',
+			\ 'cygwin' : 'make -f make_cygwin.mak',
+			\ 'mac' : 'make -f make_mac.mak',
+			\ 'unix' : 'make -f make_unix.mak',
+			\ },
+			\ }
 
 
 " 1見た目を綺麗に
 NeoBundle 'itchyny/lightline.vim'
 
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ 'component_function': {
-      \   'fugitive': 'LightLineFugitive',
-      \   'filename': 'LightLineFilename',
-      \   'fileformat': 'LightLineFileformat',
-      \   'filetype': 'LightLineFiletype',
-      \   'fileencoding': 'LightLineFileencoding',
-      \   'mode': 'LightLineMode',
-      \   'ctrlpmark': 'CtrlPMark',
-      \ },
-      \ 'component_expand': {
-      \   'syntastic': 'SyntasticStatuslineFlag',
-      \ },
-      \ 'component_type': {
-      \   'syntastic': 'error',
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
+			\ 'colorscheme': 'wombat',
+			\ 'active': {
+			\   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+			\   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+			\ },
+			\ 'component_function': {
+			\   'fugitive': 'LightLineFugitive',
+			\   'filename': 'LightLineFilename',
+			\   'fileformat': 'LightLineFileformat',
+			\   'filetype': 'LightLineFiletype',
+			\   'fileencoding': 'LightLineFileencoding',
+			\   'mode': 'LightLineMode',
+			\   'ctrlpmark': 'CtrlPMark',
+			\ },
+			\ 'component_expand': {
+			\   'syntastic': 'SyntasticStatuslineFlag',
+			\ },
+			\ 'component_type': {
+			\   'syntastic': 'error',
+			\ },
+			\ 'separator': { 'left': '', 'right': '' },
+			\ 'subseparator': { 'left': '', 'right': '' }
+			\ }
 
 function! LightLineModified()
-  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+	return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 
 function! LightLineReadonly()
-  return &ft !~? 'help' && &readonly ? '🔐' : '🔓'
+	return &ft !~? 'help' && &readonly ? '🔐' : '🔓'
 endfunction
 
 function! LightLineFilename()
-  let fname = expand('%:t')
-  return fname == 'ControlP' ? g:lightline.ctrlp_item :
-        \ fname == '__Tagbar__' ? g:lightline.fname :
-        \ fname =~ '__Gundo\|NERD_tree' ? '' :
-        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \ &ft == 'unite' ? unite#get_status_string() :
-        \ &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-        \ ('' != fname ? fname : '[No Name]') .
-        \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+	let fname = expand('%:t')
+	return fname == 'ControlP' ? g:lightline.ctrlp_item :
+				\ fname == '__Tagbar__' ? g:lightline.fname :
+				\ fname =~ '__Gundo\|NERD_tree' ? '' :
+				\ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+				\ &ft == 'unite' ? unite#get_status_string() :
+				\ &ft == 'vimshell' ? vimshell#get_status_string() :
+				\ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+				\ ('' != fname ? fname : '[No Name]') .
+				\ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
 endfunction
 
 function! LightLineFugitive()
-  try
-    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-      let mark = ' ' 
-      let _ = fugitive#head()
-      return strlen(_) ? mark._ : ''
-    endif
-  catch
-  endtry
-  return ''
+	try
+		if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+			let mark = ' ' 
+			let _ = fugitive#head()
+			return strlen(_) ? mark._ : ''
+		endif
+	catch
+	endtry
+	return ''
 endfunction
 
 function! LightLineFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
+	return winwidth(0) > 70 ? &fileformat : ''
 endfunction
 
 function! LightLineFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+	return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
 endfunction
 
 function! LightLineFileencoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+	return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
 function! LightLineMode()
-  let fname = expand('%:t')
-  return fname == '__Tagbar__' ? 'Tagbar' :
-        \ fname == 'ControlP' ? 'CtrlP' :
-        \ fname == '__Gundo__' ? 'Gundo' :
-        \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-        \ fname =~ 'NERD_tree' ? 'NERDTree' :
-        \ &ft == 'unite' ? 'Unite' :
-        \ &ft == 'vimfiler' ? 'VimFiler' :
-        \ &ft == 'vimshell' ? 'VimShell' :
-        \ winwidth(0) > 60 ? lightline#mode() : ''
+	let fname = expand('%:t')
+	return fname == '__Tagbar__' ? 'Tagbar' :
+				\ fname == 'ControlP' ? 'CtrlP' :
+				\ fname == '__Gundo__' ? 'Gundo' :
+				\ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+				\ fname =~ 'NERD_tree' ? 'NERDTree' :
+				\ &ft == 'unite' ? 'Unite' :
+				\ &ft == 'vimfiler' ? 'VimFiler' :
+				\ &ft == 'vimshell' ? 'VimShell' :
+				\ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
 function! CtrlPMark()
-  if expand('%:t') =~ 'ControlP'
-    call lightline#link('iR'[g:lightline.ctrlp_regex])
-    return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-          \ , g:lightline.ctrlp_next], 0)
-  else
-    return ''
-  endif
+	if expand('%:t') =~ 'ControlP'
+		call lightline#link('iR'[g:lightline.ctrlp_regex])
+		return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+					\ , g:lightline.ctrlp_next], 0)
+	else
+		return ''
+	endif
 endfunction
 
 let g:ctrlp_status_func = {
-  \ 'main': 'CtrlPStatusFunc_1',
-  \ 'prog': 'CtrlPStatusFunc_2',
-  \ }
+			\ 'main': 'CtrlPStatusFunc_1',
+			\ 'prog': 'CtrlPStatusFunc_2',
+			\ }
 
 function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-  let g:lightline.ctrlp_regex = a:regex
-  let g:lightline.ctrlp_prev = a:prev
-  let g:lightline.ctrlp_item = a:item
-  let g:lightline.ctrlp_next = a:next
-  return lightline#statusline(0)
+	let g:lightline.ctrlp_regex = a:regex
+	let g:lightline.ctrlp_prev = a:prev
+	let g:lightline.ctrlp_item = a:item
+	let g:lightline.ctrlp_next = a:next
+	return lightline#statusline(0)
 endfunction
 
 function! CtrlPStatusFunc_2(str)
-  return lightline#statusline(0)
+	return lightline#statusline(0)
 endfunction
 
 let g:tagbar_status_func = 'TagbarStatusFunc'
 
 function! TagbarStatusFunc(current, sort, fname, ...) abort
-    let g:lightline.fname = a:fname
-  return lightline#statusline(0)
+	let g:lightline.fname = a:fname
+	return lightline#statusline(0)
 endfunction
 
 augroup AutoSyntastic
-  autocmd!
-  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+	autocmd!
+	autocmd BufWritePost *.c,*.cpp call s:syntastic()
 augroup END
 function! s:syntastic()
-  SyntasticCheck
-  call lightline#update()
+	SyntasticCheck
+	call lightline#update()
 endfunction
 
 let g:unite_force_overwrite_statusline = 0
@@ -229,17 +229,17 @@ nnoremap <silent> <C-_> :<C-u>call ToggleCase()<CR>
 
 "Emmet
 NeoBundleLazy 'mattn/emmet-vim', {
-  \ 'autoload' : {
-  \   'filetypes' : ['html', 'html5', 'eruby', 'jsp', 'xml', 'css', 'scss', 'coffee'],
-  \   'commands' : ['<Plug>ZenCodingExpandNormal']
-  \ }}
+			\ 'autoload' : {
+			\   'filetypes' : ['html', 'html5', 'eruby', 'jsp', 'xml', 'css', 'scss', 'coffee'],
+			\   'commands' : ['<Plug>ZenCodingExpandNormal']
+			\ }}
 " emmet {{{
 let g:use_emmet_complete_tag = 1
 let g:user_emmet_settings = {
-  \ 'lang' : 'ja',
-  \ 'html' : {
-  \   'indentation' : '  '
-  \ }}
+			\ 'lang' : 'ja',
+			\ 'html' : {
+			\   'indentation' : '  '
+			\ }}
 " }}}
 
 
@@ -247,12 +247,12 @@ let g:user_emmet_settings = {
 let g:user_emmet_leader_key = '<C-y>'
 let g:use_emmet_complete_tag = 1
 let g:user_emmet_settings = {
-						\ 'variables':{
-						\		'lang' : 'ja'
-						\ },
-						\ 'html' : {
-						\   'indentation' : '  '
-						\ }}
+			\ 'variables':{
+			\		'lang' : 'ja'
+			\ },
+			\ 'html' : {
+			\   'indentation' : '  '
+			\ }}
 " }}}
 
 "sudo vim
@@ -260,7 +260,7 @@ NeoBundle 'sudo.vim'
 
 "vimでprocessing
 NeoBundle 'sophacles/vim-processing'
-
+au BufNewFile,BufRead *.pde setf processing
 "vimでcs
 NeoBundle 'kchmck/vim-coffee-script'
 " vimにcoffeeファイルタイプを認識させる
@@ -323,7 +323,6 @@ let g:quickrun_config.processing =  {
 			\     'command': 'processing-java',
 			\     'exec': '%c --sketch=$PWD/ --output=$PWD/temp --run --force',
 			\   }
-
 let g:quickrun_config['coffee'] = {'command' : 'coffee', 'exec' : ['%c -cbp %s']}
 let g:quickrun_config['html'] = { 'command' : 'open', 'exec' : '%c %s', 'outputter': 'browser' }
 let g:quickrun_config["java"] = {
@@ -602,13 +601,13 @@ cmap w!! w !sudo tee > /dev/null %
 nnoremap <expr> n/ _(":%s/<Cursor>/&/gn")
 
 function! s:move_cursor_pos_mapping(str, ...)
-    let left = get(a:, 1, "<Left>")
-    let lefts = join(map(split(matchstr(a:str, '.*<Cursor>\zs.*\ze'), '.\zs'), 'left'), "")
-    return substitute(a:str, '<Cursor>', '', '') . lefts
+	let left = get(a:, 1, "<Left>")
+	let lefts = join(map(split(matchstr(a:str, '.*<Cursor>\zs.*\ze'), '.\zs'), 'left'), "")
+	return substitute(a:str, '<Cursor>', '', '') . lefts
 endfunction
 
 function! _(str)
-    return s:move_cursor_pos_mapping(a:str, "\<Left>")
+	return s:move_cursor_pos_mapping(a:str, "\<Left>")
 endfunction
 
 
