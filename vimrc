@@ -261,6 +261,9 @@ NeoBundle 'sudo.vim'
 "vimでprocessing
 NeoBundle 'sophacles/vim-processing'
 au BufNewFile,BufRead *.pde setf processing
+let g:use_processing_java=1
+"http://qiita.com/miyakou1982/items/c406a014532c92ef992b
+
 "vimでcs
 NeoBundle 'kchmck/vim-coffee-script'
 " vimにcoffeeファイルタイプを認識させる
@@ -347,7 +350,7 @@ NeoBundle 'tpope/vim-surround'
 " map <silent>sd <Plug>(operator-surround-delete)
 " map <silent>sr <Plug>(operator-surround-replace)
 
-"Tabを便利にするために入れるやつ
+"連続入力を便利にするために入れるやつ
 NeoBundle 'kana/vim-submode'
 
 "マルチインクリメントサーチ
@@ -358,7 +361,6 @@ map g/ <Plug>(incsearch-stay)
 
 "migemo
 NeoBundle 'haya14busa/incsearch-migemo.vim'
-" マッピング例
 map m/ <Plug>(incsearch-migemo-/)
 map m? <Plug>(incsearch-migemo-?)
 map mg/ <Plug>(incsearch-migemo-stay)
@@ -417,10 +419,43 @@ NeoBundle 'honza/vim-snippets'
 "git操作
 NeoBundle 'tpope/vim-fugitive'
 
+""起動画面にショートカット作成
+"NeoBundle 'mhinz/vim-startify'
+"" startifyのヘッダー部分に表示する文字列を設定する(dateコマンドを実行して日付を設定している)
+"let g:startify_custom_header =
+"  \ map(split(system('date'), '\n'), '"   ". v:val') + ['','']
+"" デフォルトだと、最近使ったファイルの先頭は数字なので、使用するアルファベットを指定
+"let g:startify_custom_indices = ['f', 'g', 'h', 'r', 'i', 'o', 'b']
+"" よく使うファイルをブックマークとして登録しておく
+"let g:startify_bookmarks = [
+"  \ '~/.vimrc',
+"  \ '~/.zshrc'
+"  \ ]
+
+"switch vim
+NeoBundle 'AndrewRadev/switch.vim'
+let g:switch_mapping = "_"
+"let g:switch_custom_definitions =
+"\[
+"\   {
+"\         '\(\k\+\)'    : '''\1''',
+"\       '''\(.\{-}\)''' :  '"\1"',
+"\        '"\(.\{-}\)"'  :   '\1',
+"\   },
+"\]
+
+"EasyBuffer
+NeoBundle 'troydm/easybuffer.vim'
+nmap <silent><Leader>b :EasyBuffer<CR>
+
 "controlP でファイル表示
 NeoBundle 'ctrlpvim/ctrlp.vim'
 let g:ctrlp_use_migemo = 1
 
+"controlP extension 
+"http://sgur.tumblr.com/post/21848239550/ctrlpvim-%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%86%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%B3%E4%BD%9C%E3%81%A3%E3%81%9F
+"NeoBundle 'sgur/ctrlp-extensions.vim'
+"let g:ctrlp_extensions = ['cmdline', 'yankring', 'menu']
 
 "File tree表示
 NeoBundle 'scrooloose/nerdtree'
@@ -506,7 +541,7 @@ set smartcase
 
 "syntax setting
 syntax on
-colorscheme molokai
+colorscheme molokai  
 set t_Co=256
 "カーソル行の背景色変更
 set cursorline
@@ -684,6 +719,11 @@ set undodir=$HOME/.vim/undo
 set undofile
 "ClearUndo で undo履歴クリア
 command -nargs=0 ClearUndo call <sid>ClearUndo()
+
+" swp
+set directory=$HOME/.vim/tmp
+set backupdir=$HOME/.vim/tmp
+
 
 "編集箇所保存
 function! s:RestoreCursorPostion()

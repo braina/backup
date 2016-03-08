@@ -51,7 +51,7 @@ __battery_mac() {
 
 	percentage=`pmset -g ps |grep -o "[0-9]*%"`
 	state=`pmset -g ps |grep -o "[a-z]*charg[a-z]*"` 
-	remaining=`pmset -g ps |egrep -o "[0-5]:[0-5][0-9]|no estimate"` 
+	remaining=`pmset -g ps |egrep -o "[0-9]:[0-5][0-9]|no estimate"` 
 	
 	if [ "$state" = "charged" ] ; then
 		echo "full" 

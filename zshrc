@@ -13,6 +13,7 @@ fi
 
 
 
+
 # Customize to your needs...
 
 [[ -z "$TMUX" && ! -z "$PS1" ]] && tmux
@@ -25,7 +26,10 @@ KEYTIMEOUT=1
 # 色を使用出来るようにする
 autoload -Uz colors
 colors
- 
+
+#nodebrewのpath
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+
 # vim 風キーバインドにする
 bindkey -v
 
@@ -73,6 +77,7 @@ alias sudo='sudo '
 # グローバルエイリアス
 alias -g L='| less'
 alias -g G='| grep'
+alias -g P='| peco'
 
 
 alias cal='vim -c Calendar'
@@ -138,6 +143,30 @@ setopt hist_reduce_blanks
 setopt extended_glob
 
 
+[[ -s /usr/share/autojump/autojump.zsh ]] && . /usr/share/autojump/autojump.zsh
+# for homebrew
+[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+
+
+# peco
+function peco-select-history() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(\history -n 1 | \
+        eval $tac | \
+        peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N peco-select-history
+bindkey '^r' peco-select-history
+
+
+
 
 # OS 別の設定
 case ${OSTYPE} in
@@ -190,3 +219,5 @@ ls_abbrev() {
 		echo "$ls_result"
 	fi
 }
+
+
