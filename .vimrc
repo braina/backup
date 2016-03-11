@@ -1,46 +1,44 @@
 "http://deadlinetimer.com/timer/106757
 
-"neobundle
-" neobundle settings {{{
-if has('vim_starting')
-		set nocompatible
-		" neobundle をインストールしていない場合は自動インストール
-		if !isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
-				echo "install neobundle..."
-				" vim からコマンド呼び出しているだけ neobundle.vim のクローン
-				:call system("git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim")
-		endif
-		" runtimepath の追加は必須
-		set runtimepath+=~/.vim/bundle/neobundle.vim/
+" dein settings {{{
+if &compatible
+  set nocompatible
 endif
-call neobundle#begin(expand('~/.vim/bundle'))
-let g:neobundle_default_git_protocol='https'
+" dein.vimのディレクトリ
+let s:dein_dir = expand('~/.vim/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
+" なければgit clone
+if !isdirectory(s:dein_repo_dir)
+  execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+endif
+execute 'set runtimepath^=' . s:dein_repo_dir
 
-NeoBundleFetch 'Shougo/neobundle.vim'
+call dein#begin(s:dein_dir)
+
 
 "閉じ括弧自動補完
-NeoBundle 'Townk/vim-autoclose'
+call dein#add( 'Townk/vim-autoclose' )
 
 "jkを加速する
-NeoBundle 'rhysd/accelerated-jk'
+call dein#add( 'rhysd/accelerated-jk' )
 let g:accelerated_jk_acceleration_table = [10,5,3]
 nmap j <Plug>(accelerated_jk_gj)
 nmap k <Plug>(accelerated_jk_gk)
 
 "vimproc非同期処理
-NeoBundle 'Shougo/vimproc.vim', {
+call dein#add( 'Shougo/vimproc.vim', {
 			\ 'build' : {
 			\ 'windows' : 'make -f make_mingw32.mak',
 			\ 'cygwin' : 'make -f make_cygwin.mak',
 			\ 'mac' : 'make -f make_mac.mak',
 			\ 'unix' : 'make -f make_unix.mak',
 			\ },
-			\ }
+			\ } )
 
 
 " 1見た目を綺麗に
-NeoBundle 'itchyny/lightline.vim'
+call dein#add( 'itchyny/lightline.vim' )
 
 let g:lightline = {
 			\ 'colorscheme': 'wombat',
@@ -173,31 +171,31 @@ let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 
 "ctagsを利用したジャンプリスト
-NeoBundle 'majutsushi/tagbar'
+call dein#add( 'majutsushi/tagbar' )
 nmap <F8> :TagbarToggle<CR>
 "保存時ctags自動生成 => :ctags で生成にする。
-NeoBundle 'soramugi/auto-ctags.vim'
+call dein#add( 'soramugi/auto-ctags.vim' )
 "let g:auto_ctags = 1
 
 
 "lookを使った英単語補完
-NeoBundle 'ujihisa/neco-look'
+call dein#add( 'ujihisa/neco-look' )
 "spell 文法のチェック
 set spelllang=en,cjk
 "http://rhysd.hatenablog.com/entry/2014/12/08/082825
 ":GrammarousCheck で実行
-NeoBundle 'rhysd/vim-grammarous'
+call dein#add( 'rhysd/vim-grammarous' )
 
 "簡単整形
 "http://blog.tokoyax.com/entry/vim/vim-easy-align
-NeoBundle 'junegunn/vim-easy-align'
+call dein#add( 'junegunn/vim-easy-align' )
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
 vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
 "commentトグル
-NeoBundle 'scrooloose/nerdcommenter'
+call dein#add( 'scrooloose/nerdcommenter' )
 let NERDSpaceDelims = 1
 nmap ,, <Plug>NERDCommenterToggle
 vmap ,, <Plug>NERDCommenterToggle
@@ -206,33 +204,35 @@ let NERDShutUp=1
 
 
 "日本語ヘルプ追加
-NeoBundle 'vim-jp/vimdoc-ja'
+call dein#add( 'vim-jp/vimdoc-ja' )
 
 "undotree可視化
-NeoBundle 'sjl/gundo.vim'
+call dein#add( 'sjl/gundo.vim' )
 "いちいちプレビューしない奴 r 押下でプレビューする
 "使用感的に微妙なので保留（本家でも3jとかすれば同じといえばおなじ）
 "http://d.hatena.ne.jp/heavenshell/20120218/1329532535
-"NeoBundle 'https://bitbucket.org/heavenshell/gundo.vim'
+"call dein#add( 'https://bitbucket.org/heavenshell/gundo.vim' )
 let g:gundo_auto_preview = 0
 nmap gu              :<C-u>GundoToggle<CR>
 
 "インデント表示
-NeoBundle 'Yggdroot/indentLine'
+call dein#add( 'Yggdroot/indentLine' )
 let g:indentLine_faster = 1
 nmap <silent><Leader>i :<C-u>IndentLinesToggle<CR>
 
 "toggle case
 "snake case camel case
-NeoBundle 'tanabe/ToggleCase-vim'
+call dein#add( 'tanabe/ToggleCase-vim' )
 nnoremap <silent> <C-_> :<C-u>call ToggleCase()<CR>
 
 "Emmet
-NeoBundleLazy 'mattn/emmet-vim', {
+call dein#add('mattn/emmet-vim', {
+			\ 'lazy': 1,
 			\ 'autoload' : {
 			\   'filetypes' : ['html', 'html5', 'eruby', 'jsp', 'xml', 'css', 'scss', 'coffee'],
 			\   'commands' : ['<Plug>ZenCodingExpandNormal']
-			\ }}
+			\ }} )
+
 " emmet {{{
 let g:use_emmet_complete_tag = 1
 let g:user_emmet_settings = {
@@ -256,16 +256,26 @@ let g:user_emmet_settings = {
 " }}}
 
 "sudo vim
-NeoBundle 'sudo.vim'
+call dein#add( 'sudo.vim' )
 
 "vimでprocessing
-NeoBundle 'sophacles/vim-processing'
+call dein#add( 'sophacles/vim-processing' )
 au BufNewFile,BufRead *.pde setf processing
 let g:use_processing_java=1
 "http://qiita.com/miyakou1982/items/c406a014532c92ef992b
 
+"vimで go
+call dein#add( 'fatih/vim-go' )
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+
+autocmd FileType go :highlight goErr cterm=bold ctermfg=214
+autocmd FileType go :match goErr /\<err\>/
+
+
 "vimでcs
-NeoBundle 'kchmck/vim-coffee-script'
+call dein#add( 'kchmck/vim-coffee-script' )
 " vimにcoffeeファイルタイプを認識させる
 au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 " インデントを設定
@@ -273,8 +283,8 @@ autocmd FileType coffee     setlocal sw=2 sts=2 ts=2 et
 autocmd BufWritePost *.coffee silent make!
 
 "sass自動コンパイル
-NeoBundle 'AtsushiM/search-parent.vim'
-NeoBundle 'AtsushiM/sass-compile.vim'
+call dein#add( 'AtsushiM/search-parent.vim' )
+call dein#add( 'AtsushiM/sass-compile.vim' )
 ""{{{
 let g:sass_compile_auto = 1
 let g:sass_compile_cdloop = 5
@@ -285,7 +295,7 @@ let g:sass_compile_aftercmd = ''
 "}}}
 
 "ハイライト
-NeoBundle 't9md/vim-quickhl'
+call dein#add( 't9md/vim-quickhl' )
 nmap <Space>m <Plug>(quickhl-manual-this)
 xmap <Space>m <Plug>(quickhl-manual-this)
 nmap <Space>M <Plug>(quickhl-manual-reset)
@@ -293,17 +303,17 @@ xmap <Space>M <Plug>(quickhl-manual-reset)
 
 "CSSなどの色をその色でハイライト
 "http://blog.scimpr.com/2013/02/24/vim%E3%81%A7css%E3%82%92%E7%B7%A8%E9%9B%86%E3%81%99%E3%82%8B%E3%81%A8%E3%81%8D%E3%81%AB%E8%89%B2%E3%82%92%E3%83%97%E3%83%AC%E3%83%B4%E3%83%A5%E3%83%BC%E3%80%9Ccolorizer/
-NeoBundle 'lilydjwg/colorizer'
+call dein#add( 'lilydjwg/colorizer' )
 
 
 "tweetvim
-NeoBundle 'basyura/TweetVim'
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'basyura/twibill.vim'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'h1mesuke/unite-outline'
-NeoBundle 'basyura/bitly.vim'
-NeoBundle 'Shougo/unite.vim'
+call dein#add( 'basyura/TweetVim' )
+call dein#add( 'mattn/webapi-vim' )
+call dein#add( 'basyura/twibill.vim' )
+call dein#add( 'tyru/open-browser.vim' )
+call dein#add( 'h1mesuke/unite-outline' )
+call dein#add( 'basyura/bitly.vim' )
+call dein#add( 'Shougo/unite.vim' )
 filetype plugin indent on
 let g:tweetvim_tweet_per_page = 75
 nmap tn              :<C-u>TweetVimSay<CR>
@@ -311,7 +321,7 @@ nmap tn              :<C-u>TweetVimSay<CR>
 
 
 "vimquickrun
-NeoBundle 'thinca/vim-quickrun'
+call dein#add( 'thinca/vim-quickrun' )
 "quickrun for processing:
 let g:quickrun_config = {
 			\   "_" : {
@@ -338,29 +348,29 @@ let g:quickrun_config["java"] = {
 set splitright "新しいウィンドウを右に開く
 
 "半透明でも見やすく
-NeoBundle 'miyakogi/seiya.vim'
+call dein#add( 'miyakogi/seiya.vim' )
 let g:seiya_auto_enable=1
 
 "文字列を囲んだり、囲んである文字列を消したり置換したり
-NeoBundle 'tpope/vim-surround'
+call dein#add( 'tpope/vim-surround' )
 
-" NeoBundle 'kana/vim-operator-user' 
-" NeoBundle 'rhysd/vim-operator-surround'
+" call dein#add( 'kana/vim-operator-user'  )
+" call dein#add( 'rhysd/vim-operator-surround' )
 " map <silent>sa <Plug>(operator-surround-append)
 " map <silent>sd <Plug>(operator-surround-delete)
 " map <silent>sr <Plug>(operator-surround-replace)
 
 "連続入力を便利にするために入れるやつ
-NeoBundle 'kana/vim-submode'
+call dein#add( 'kana/vim-submode' )
 
 "マルチインクリメントサーチ
-NeoBundle 'haya14busa/incsearch.vim'
+call dein#add( 'haya14busa/incsearch.vim' )
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
 "migemo
-NeoBundle 'haya14busa/incsearch-migemo.vim'
+call dein#add( 'haya14busa/incsearch-migemo.vim' )
 map m/ <Plug>(incsearch-migemo-/)
 map m? <Plug>(incsearch-migemo-?)
 map mg/ <Plug>(incsearch-migemo-stay)
@@ -368,32 +378,12 @@ map mg/ <Plug>(incsearch-migemo-stay)
 
 
 "協力な補完機能 neocomplete
-NeoBundle has('lua') ? 'Shougo/neocomplete' : 'Shougo/neocomplcache'
-
-if neobundle#is_installed('neocomplete')
-	let g:neocomplete#enable_at_startup = 1
-	let g:neocomplete#enable_ignore_case = 1
-	let g:neocomplete#enable_smart_case = 1
-	if !exists('g:neocomplete#keyword_patterns')
-		let g:neocomplete#keyword_patterns = {}
-	endif
-	let g:neocomplete#keyword_patterns._ = '\h\w*'
-elseif neobundle#is_installed('neocomplcache')
-	let g:neocomplcache_enable_at_startup = 1
-	let g:neocomplcache_enable_ignore_case = 1
-	let g:neocomplcache_enable_smart_case = 1
-	if !exists('g:neocomplcache_keyword_patterns')
-		let g:neocomplcache_keyword_patterns = {}
-	endif
-	let g:neocomplcache_keyword_patterns._ = '\h\w*'
-	let g:neocomplcache_enable_camel_case_completion = 1
-	let g:neocomplcache_enable_underbar_completion = 1
-endif
+call dein#add( has('lua') ? 'Shougo/neocomplete' : 'Shougo/neocomplcache' )
 
 
 "snipets
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
+call dein#add( 'Shougo/neosnippet' )
+call dein#add( 'Shougo/neosnippet-snippets' )
 
 " <TAB>: completion.
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -414,13 +404,13 @@ if has('conceal')
 endif
 
 " snippetファイルがまとまっているもの
-NeoBundle 'honza/vim-snippets'
+call dein#add( 'honza/vim-snippets' )
 
 "git操作
-NeoBundle 'tpope/vim-fugitive'
+call dein#add( 'tpope/vim-fugitive' )
 
 ""起動画面にショートカット作成
-"NeoBundle 'mhinz/vim-startify'
+"call dein#add( 'mhinz/vim-startify')
 "" startifyのヘッダー部分に表示する文字列を設定する(dateコマンドを実行して日付を設定している)
 "let g:startify_custom_header =
 "  \ map(split(system('date'), '\n'), '"   ". v:val') + ['','']
@@ -433,7 +423,7 @@ NeoBundle 'tpope/vim-fugitive'
 "  \ ]
 
 "switch vim
-NeoBundle 'AndrewRadev/switch.vim'
+call dein#add( 'AndrewRadev/switch.vim')
 let g:switch_mapping = "_"
 "let g:switch_custom_definitions =
 "\[
@@ -445,25 +435,25 @@ let g:switch_mapping = "_"
 "\]
 
 "EasyBuffer
-NeoBundle 'troydm/easybuffer.vim'
+call dein#add( 'troydm/easybuffer.vim' )
 nmap <silent><Leader>b :EasyBuffer<CR>
 
+
 "controlP でファイル表示
-NeoBundle 'ctrlpvim/ctrlp.vim'
+call dein#add( 'ctrlpvim/ctrlp.vim')
 let g:ctrlp_use_migemo = 1
 
 "controlP extension 
 "http://sgur.tumblr.com/post/21848239550/ctrlpvim-%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%86%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%B3%E4%BD%9C%E3%81%A3%E3%81%9F
-"NeoBundle 'sgur/ctrlp-extensions.vim'
+"call dein#add( 'sgur/ctrlp-extensions.vim')
 "let g:ctrlp_extensions = ['cmdline', 'yankring', 'menu']
 
 "File tree表示
-NeoBundle 'scrooloose/nerdtree'
+call dein#add( 'scrooloose/nerdtree' )
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
 
-
 " 様々な言語を保存時にシンタックスチェック
-NeoBundle 'scrooloose/syntastic'
+call dein#add( 'scrooloose/syntastic' )
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_mode_map = {'mode': 'active'}
@@ -495,19 +485,50 @@ let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '⚠'
 
 
-
 "Calender.vim
-NeoBundle 'itchyny/calendar.vim'
+call dein#add( 'itchyny/calendar.vim' )
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 
 
 
 
-" vimrc に記述されたプラグインでインストールされていないものがないかチェックする
-NeoBundleCheck
-call neobundle#end()
-filetype plugin indent on
+
+
+
+
+
+
+
+
+
+call dein#end()
+
+
+
+
+
+
+" vimprocだけは最初にインストールしてほしい
+if dein#check_install(['vimproc'])
+  call dein#install(['vimproc'])
+endif
+" その他インストールしていないものはこちらに入れる
+if dein#check_install()
+  call dein#install()
+endif
+" }}}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -611,6 +632,8 @@ call submode#map('bufmove', 'n', '', '>', '<C-w>>')
 call submode#map('bufmove', 'n', '', '<', '<C-w><')
 call submode#map('bufmove', 'n', '', '+', '<C-w>+')
 call submode#map('bufmove', 'n', '', '-', '<C-w>-')
+
+
 
 "Yを行末までヤンクに変更
 nnoremap Y y$
@@ -734,6 +757,15 @@ function! s:RestoreCursorPostion()
 endfunction
 
 " ファイルを開いた時に、以前のカーソル位置を復元する
+augroup vimrc_restore_cursor_position
+	autocmd!
+	autocmd BufWinEnter * call s:RestoreCursorPostion()
+augroup END
+
+
+"Escのききをよくするため、待ち時間を変更
+"見た目は変わってないんだけど、多分大丈夫
+set timeout timeoutlen=1000 ttimeoutlen=10
 augroup vimrc_restore_cursor_position
 	autocmd!
 	autocmd BufWinEnter * call s:RestoreCursorPostion()
