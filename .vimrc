@@ -490,24 +490,7 @@ call dein#add( 'itchyny/calendar.vim' )
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 
-
-
-
-
-
-
-
-
-
-
-
-
 call dein#end()
-
-
-
-
-
 
 " vimprocだけは最初にインストールしてほしい
 if dein#check_install(['vimproc'])
@@ -518,19 +501,6 @@ if dein#check_install()
   call dein#install()
 endif
 " }}}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 " -----------------------------------------------------------------------------------------------------------------------------------------------------------"
 
@@ -577,6 +547,8 @@ set showcmd
 set confirm
 "1行の文字数制限をなくす
 set display=lastline
+"新規行にスマートインデント作成
+:set cindent
 
 "</で補完
 autocmd FileType html inoremap <silent> <buffer> </ </<C-x><C-o>
@@ -585,8 +557,6 @@ autocmd FileType html inoremap <silent> <buffer> </ </<C-x><C-o>
 set syntax=markdown
 au BufRead,BufNewFile *.md set filetype=markdown
 
-"新規行にスマートインデント作成
-:set cindent
 
 "行頭行末移動をスペースキーで
 nnoremap <Space>h  ^
@@ -596,7 +566,7 @@ nnoremap <Space>l  $
 nnoremap <Space><Space>. :e $MYVIMRC<CR>
 nnoremap <Space><Space>..  :<C-u>source $MYVIMRC<CR>
 
-"インクリメント・デクリメントの里マッピング
+"インクリメント・デクリメントのリマッピング
 nnoremap + <C-a>
 nnoremap - <C-x>
 
@@ -730,20 +700,20 @@ endfunction
 if $TMUX != ""
 	augroup titlesettings
 		autocmd!
-		autocmd BufEnter * call system("tmux rename-window " . "'[vim] " . expand("%:t") . "'")
+		autocmd BufEnter * call system("tmux rename-window " . "'[Vim]" . expand("%:t") . "'")
 		autocmd VimLeave * call system("tmux rename-window zsh")
 		autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 	augroup END
 endif
 
 
-"undo
+"undofileの保存場所
 set undodir=$HOME/.vim/undo
 set undofile
 "ClearUndo で undo履歴クリア
 command -nargs=0 ClearUndo call <sid>ClearUndo()
 
-" swp
+" swpの保存場所
 set directory=$HOME/.vim/tmp
 set backupdir=$HOME/.vim/tmp
 
@@ -771,10 +741,6 @@ augroup vimrc_restore_cursor_position
 	autocmd BufWinEnter * call s:RestoreCursorPostion()
 augroup END
 
-
-"Escのききをよくするため、待ち時間を変更
-"見た目は変わってないんだけど、多分大丈夫
-set timeout timeoutlen=1000 ttimeoutlen=10
 
 
 
