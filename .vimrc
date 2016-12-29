@@ -17,6 +17,10 @@ execute 'set runtimepath^=' . s:dein_repo_dir
 call dein#begin(s:dein_dir)
 
 
+call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
+
+
+
 "閉じ括弧自動補完
 call dein#add( 'Townk/vim-autoclose' )
 
@@ -26,15 +30,7 @@ let g:accelerated_jk_acceleration_table = [10,5,3]
 nmap j <Plug>(accelerated_jk_gj)
 nmap k <Plug>(accelerated_jk_gk)
 
-"vimproc非同期処理
-call dein#add( 'Shougo/vimproc.vim', {
-			\ 'build' : {
-			\ 'windows' : 'make -f make_mingw32.mak',
-			\ 'cygwin' : 'make -f make_cygwin.mak',
-			\ 'mac' : 'make -f make_mac.mak',
-			\ 'unix' : 'make -f make_unix.mak',
-			\ },
-			\ } )
+
 
 
 " 1見た目を綺麗に
@@ -472,9 +468,6 @@ let g:syntastic_auto_loc_list = 2
 let g:syntastic_enable_highlighting = 1
 " なんでか分からないけど php コマンドのオプションを上書かないと動かなかった
 let g:syntastic_php_php_args = '-l'
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 let g:syntastic_ruby_checkers = ['rubocop'] " or ['rubocop', 'mri']
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_coffee_checkers = ['coffeelint']
@@ -491,17 +484,6 @@ let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 
 call dein#end()
-
-" vimprocだけは最初にインストールしてほしい
-if dein#check_install(['vimproc'])
-  call dein#install(['vimproc'])
-endif
-" その他インストールしていないものはこちらに入れる
-if dein#check_install()
-  call dein#install()
-endif
-" }}}
-
 " -----------------------------------------------------------------------------------------------------------------------------------------------------------"
 
 
@@ -593,6 +575,7 @@ nnoremap sP :<C-u>bp<CR>
 nnoremap st :<C-u>tabnew<CR>
 nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
+
 
 call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
 call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
